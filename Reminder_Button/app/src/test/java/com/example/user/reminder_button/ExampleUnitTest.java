@@ -1,4 +1,4 @@
-package rs.reminder_button;
+package com.example.user.reminder_button;
 
 import org.junit.Test;
 
