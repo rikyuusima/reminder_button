@@ -9,13 +9,8 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.StreamCorruptedException;
+import java.io.File;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
@@ -31,12 +26,7 @@ public class MainActivity extends AppCompatActivity {
         //ArrayAdapterの初期化
         this.list = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
 
-        //ArrayAdapterにファイル内容を追加
-        if(readFile()){
-            //ListViewの読み込み
-            ListView listview = (ListView)findViewById(R.id.time_list);
-            listview.setAdapter(list);
-        }
+        //TODO:ArrayAdapterにファイル内容を追加
 
         //ButtonとClickListener
         Button clear_button = (Button)findViewById(R.id.clear_button);
@@ -64,47 +54,14 @@ public class MainActivity extends AppCompatActivity {
             //ListViewの読み込み
             ListView listview = (ListView)findViewById(R.id.time_list);
 
+            //debug用
+            File file = new File(getApplicationContext().getFilesDir(), "SaveData.dat");
+            list.add(file.toString());
+
             //ListViewに追加
             list.add("Pushed " + hour_str + ":" + minute_str);
             listview.setAdapter(list);
         }
-        return true;
-    }
-
-    private boolean readFile(){
-        try {
-            final String filepath = "SaveData.dat";
-            FileInputStream fis = openFileInput(filepath);
-            ObjectInputStream ois = new ObjectInputStream(fis);
-            this.list = (ArrayAdapter<String>)ois.readObject();
-            ois.close();
-            fis.close();
-
-            return true;
-        }
-        catch (FileNotFoundException e) {
-            // TODO 自動生成された catch ブロック
-            e.printStackTrace();
-            return false;
-        }
-        catch (StreamCorruptedException e) {
-            // TODO 自動生成された catch ブロック
-            e.printStackTrace();
-            return false;
-        }
-        catch (IOException e) {
-            // TODO 自動生成された catch ブロック
-            e.printStackTrace();
-            return false;
-        }
-        catch (ClassNotFoundException e) {
-            // TODO 自動生成された catch ブロック
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    private boolean writeFile(){
         return true;
     }
 }
